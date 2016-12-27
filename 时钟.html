@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="JS/jquery-2.2.2.js"></script>
+    <script src="JS/clock.js"></script>
+    <script src="JS/person-move.js"></script>
+    <style>
+        #canvas {
+            border: 1px solid #000;
+            margin: 50px auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" height="400" width="600"></canvas>
+
+<script>
+
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    var width = canvas.width;
+    var height = canvas.height;
+    var stepIndex = 0;
+    var isLeft = true;
+    // 将坐标原点变换
+    ctx.translate(300, 200);
+
+    // ---------- person ------------
+    var argu1 = {
+        src: "JS/img/gameImgs/man10.png",   // 图片来源
+        posX: -22,    //  人物在页面中初始x坐标
+        posY: 0,    //  人物在页面中初始y坐标
+        direction: "forward"   // 任务初始朝向
+    }
+    var person1 = new createModule(ctx,argu1);
+
+    //  --------- clock -----------
+    var start = new Clock(ctx,{
+        bigR: 120,
+        hourR: 10,
+        minR: 6,
+        secR: 4,
+    });
+
+    function alternate() {
+        if(stepIndex < 10 && isLeft == true) {
+            stepIndex++;
+            person1.moveLeft();
+        }else if(stepIndex >= -9) {
+            stepIndex--;
+            isLeft = false;
+            person1.moveRight();
+        }else {
+            stepIndex++;
+            isLeft = true;
+            person1.moveLeft();
+        }
+    }
+
+    window.onkeydown = function (e) {
+        if(e.keyCode == 87) {
+            person1.moveBack();
+        }else if(e.keyCode == 83) {
+            person1.moveForward();
+        }else if(e.keyCode == 68) {
+            person1.moveRight();
+        }else if(e.keyCode == 65) {
+            person1.moveLeft();
+        }
+    }
+
+
+</script>
+</body>
+</html>
